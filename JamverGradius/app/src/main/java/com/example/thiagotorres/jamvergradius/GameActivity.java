@@ -16,6 +16,12 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
 
+    private long lastTime = 0;
+    private float posX, posY, posZ;
+
+    public GameActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +36,19 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        posX = event.values[0];
+        posY = event.values[1];
+        posZ = event.values[2];
 
+        long currTime = System.currentTimeMillis();
+
+        if((currTime - lastTime) > 100){
+            long diffTime = (currTime - lastTime);
+            lastTime = diffTime;
+
+            //Make sure you gather the shake gesture to perform the special!
+
+        }
     }
 
     @Override
