@@ -3,13 +3,12 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorManager;
 import android.hardware.SensorEventListener;
-import android.support.v7.app.AppCompatActivity;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
-public class GameActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
 
     private SensorManager senSensorManager;
@@ -18,7 +17,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     private long lastTime = 0;
     private float posX, posY, posZ;
 
-    public GameActivity() {
+    public MainActivity() {
 
     }
 
@@ -26,7 +25,7 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(new GameView(this));
+        setContentView(new GradiusView(this));
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -76,13 +75,3 @@ public class GameActivity extends AppCompatActivity implements SensorEventListen
     }
 
 }
-
-
-
-
-
-
-
-
-
-
