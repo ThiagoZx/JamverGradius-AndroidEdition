@@ -9,34 +9,68 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.view.MotionEvent;
 import android.view.View;
+import android.os.Handler;
+
+import java.io.Console;
 
 /**
  * Created by Thiago.Torres on 05/04/2016.
  */
-public class GradiusView extends View implements SensorEventListener{
+public class GradiusView extends View implements SensorEventListener, Runnable{
 
     public SensorManager senSensorManager;
     public Sensor senAccelerometer;
     private long lastTime = 0;
     private float posX, posY, posZ;
 
+    private Handler handler;
+
+    private boolean isUpdating = true;
+
     public GradiusView (Context context){
         super(context);
+        handler = new Handler();
+        handler.post(this);
     }
+
+    Paint color = new Paint();
 
     @Override
     protected void onDraw(Canvas canvas){
         Rect rect = new Rect();
         rect.set(0, 0, canvas.getWidth(), canvas.getHeight() / 2);
 
-        Paint color = new Paint();
+
         color.setColor(Color.BLUE);
         color.setStyle(Paint.Style.FILL);
         color.setTextSize(100);
         //canvas.drawRect(rect, color);
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
         super.onDraw(canvas);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        color.setColor(Color.RED);
+        System.out.println("Touch!");
+        return true;
+    }
+
+    private void Update() {
+        //Update Game
+    }
+
+    @Override
+    public void run() {
+        if(isUpdating)
+        {
+            handler.postDelayed(this, 30);
+
+            Update();
+            invalidate();
+        }
     }
 
     @Override
