@@ -16,15 +16,13 @@ import android.view.View;
  */
 public class GradiusView extends View implements SensorEventListener{
 
-    private SensorManager senSensorManager;
-    private Sensor senAccelerometer;
+    public SensorManager senSensorManager;
+    public Sensor senAccelerometer;
+    private long lastTime = 0;
+    private float posX, posY, posZ;
 
     public GradiusView (Context context){
         super(context);
-    }
-
-    Start(){
-
     }
 
     @Override
@@ -35,14 +33,27 @@ public class GradiusView extends View implements SensorEventListener{
         Paint color = new Paint();
         color.setColor(Color.BLUE);
         color.setStyle(Paint.Style.FILL);
-
-        canvas.drawRect(rect, color);
+        color.setTextSize(100);
+        //canvas.drawRect(rect, color);
+        canvas.drawText("Pos_x:" + posX, 20, 200, color);
         super.onDraw(canvas);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        posX = event.values[0];
+        posY = event.values[1];
+        posZ = event.values[2];
 
+        long currTime = System.currentTimeMillis();
+
+        if((currTime - lastTime) > 100){
+            long diffTime = (currTime - lastTime);
+            lastTime = diffTime;
+
+            //Make sure you gather the shake gesture to perform the special!
+
+        }
     }
 
     @Override
