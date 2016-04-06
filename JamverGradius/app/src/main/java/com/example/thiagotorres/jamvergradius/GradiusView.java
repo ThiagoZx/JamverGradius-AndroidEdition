@@ -5,15 +5,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.view.View;
 
 /**
  * Created by Thiago.Torres on 05/04/2016.
  */
-public class GradiusView extends View {
+public class GradiusView extends View implements SensorEventListener{
+
+    private SensorManager senSensorManager;
+    private Sensor senAccelerometer;
 
     public GradiusView (Context context){
         super(context);
+    }
+
+    Start(){
+
     }
 
     @Override
@@ -29,9 +40,13 @@ public class GradiusView extends View {
         super.onDraw(canvas);
     }
 
-    MainActivity a = new MainActivity();
-    float b = a.getAccX();
-    float c = a.getAccY();
+    @Override
+    public void onSensorChanged(SensorEvent event) {
 
+    }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 }
