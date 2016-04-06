@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,8 +19,9 @@ import java.io.Console;
  */
 public class GradiusView extends View implements SensorEventListener, Runnable{
 
-    public SensorManager senSensorManager;
-    public Sensor senAccelerometer;
+    private SensorManager senSensorManager;
+    private Sensor senAccelerometer;
+
     private long lastTime = 0;
     private float posX, posY, posZ;
 
@@ -29,31 +29,37 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     private boolean isUpdating = true;
 
+    Paint color = new Paint();
+
     public GradiusView (Context context){
         super(context);
         handler = new Handler();
         handler.post(this);
-    }
 
-    Paint color = new Paint();
-
-    @Override
-    protected void onDraw(Canvas canvas){
-        Rect rect = new Rect();
-        rect.set(0, 0, canvas.getWidth(), canvas.getHeight() / 2);
-
+        //MainActivity a = new MainActivity();
+        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
         color.setColor(Color.BLUE);
         color.setStyle(Paint.Style.FILL);
         color.setTextSize(100);
-        //canvas.drawRect(rect, color);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas){
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
         super.onDraw(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        color.setColor(Color.RED);
+        if (color.getColor() == (Color.RED)){
+            color.setColor(Color.BLUE);
+        } else{
+            color.setColor(Color.RED);
+        }
+
         System.out.println("Touch!");
         return true;
     }
