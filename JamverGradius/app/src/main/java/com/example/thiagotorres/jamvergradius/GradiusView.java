@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,17 +20,20 @@ import java.io.Console;
  */
 public class GradiusView extends View implements SensorEventListener, Runnable{
 
+    //sensor stuff
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
-
     private long lastTime = 0;
     private float posX, posY;//, posZ;
 
+    //Managing stuff
     private Handler handler;
-
     private boolean isUpdating = true;
 
-    Paint color = new Paint();
+    //My healthy tests :D
+    private Paint color = new Paint();
+    private Rect player = new Rect();
+    private int x, y = 0;
 
     public GradiusView (Context context){
         super(context);
@@ -38,17 +42,20 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         color.setColor(Color.BLUE);
         color.setStyle(Paint.Style.FILL);
         color.setTextSize(100);
+
+
     }
 
     @Override
     protected void onDraw(Canvas canvas){
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
         canvas.drawText("Pos_y:" + posY, 20, 400, color);
+        canvas.drawRect(player, color);
         super.onDraw(canvas);
     }
 
@@ -73,7 +80,12 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     private void Update() {
-        //Update Game
+        player.set(x, y, (x + 300) , y + 300);
+        x += Math.round(posX);
+        y += Math.round(posY);
+
+        //x += posX;
+        //y += posY;
     }
 
     @Override
