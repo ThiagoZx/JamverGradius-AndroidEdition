@@ -48,7 +48,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         color.setStyle(Paint.Style.FILL);
         color.setTextSize(100);
 
-
     }
 
     @Override
@@ -80,12 +79,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     private void Update() {
-        player.set(x, y, (x + 300) , y + 300);
+        player.set((x) * -1, y, ((x) * -1) + 300, y + 300);
         x += Math.round(posX);
         y += Math.round(posY);
-
-        //x += posX;
-        //y += posY;
     }
 
     @Override
