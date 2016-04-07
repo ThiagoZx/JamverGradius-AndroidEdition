@@ -23,7 +23,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     private Sensor senAccelerometer;
 
     private long lastTime = 0;
-    private float posX, posY, posZ;
+    private float posX, posY;//, posZ;
 
     private Handler handler;
 
@@ -36,8 +36,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         handler = new Handler();
         handler.post(this);
 
-        //MainActivity a = new MainActivity();
-        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
@@ -49,18 +48,27 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     @Override
     protected void onDraw(Canvas canvas){
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
+        canvas.drawText("Pos_y:" + posY, 20, 400, color);
         super.onDraw(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (event.getAction() == MotionEvent.ACTION_DOWN){
+            System.out.println("You're Holding still at X:" + event.getRawX() + " Y:" + event.getRawY());
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_UP){
+            System.out.println("Y u let me go ; ^ ;");
+        }
+
         if (color.getColor() == (Color.RED)){
             color.setColor(Color.BLUE);
         } else{
             color.setColor(Color.RED);
         }
-
-        System.out.println("Touch!");
+        System.out.println("You're Touching me at X:" + event.getRawX() + " Y:" + event.getRawY());
         return true;
     }
 
@@ -83,7 +91,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     public void onSensorChanged(SensorEvent event) {
         posX = event.values[0];
         posY = event.values[1];
-        posZ = event.values[2];
+        //posZ = event.values[2];
 
         long currTime = System.currentTimeMillis();
 
