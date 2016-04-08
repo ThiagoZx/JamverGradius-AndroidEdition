@@ -31,7 +31,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     //My healthy tests :D
     private Paint color = new Paint();
-    private Rect player = new Rect();
     private int x, y = 0;
     Player ship;
 
@@ -75,24 +74,29 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
             System.out.println("Y u let me go ; ^ ;");
         }
 
+        if (event.getAction() == MotionEvent.ACTION_MOVE){
+            System.out.println("STOP DRAGIN ME AROUND! >:C");
+        }
+
         if (color.getColor() == (Color.RED)){
             color.setColor(Color.BLUE);
         } else{
             color.setColor(Color.RED);
         }
-        System.out.println("You're Touching me at X:" + event.getRawX() + " Y:" + event.getRawY());
+
+        //System.out.println("You're Touching me at X:" + event.getRawX() + " Y:" + event.getRawY());
         return true;
     }
 
     private void Update() {
         //Healthy tests C: (THEY WORK ON OTHER CLASSES)
+        x = Math.round(posX);
+        y = Math.round(posY);
         ship.updatePlayer(x, y);
-        x += (Math.round(posX));
-        y += (Math.round(posY));
 
         //THINGS I HAVE TO DO HERE
 
-        //Update player position
+        //Update player position - Ok!
         //Update shoot position
         //Detect if there is new shooting
         //Detect colisions with enemies

@@ -9,9 +9,9 @@ import android.graphics.Paint;
  */
 public class Player {
 
-    private int posX, posY = 0;
-    //private int size = 128;
+    //The ship is 74x108 px long, from where it starts.
     private Paint paint = new Paint();
+    private int posX, posY = 0;
     private Bitmap image;
 
     public Player(Bitmap bitmap) {
@@ -23,8 +23,8 @@ public class Player {
     }
 
     void updatePlayer(int x, int y){
-        posX += x;
-        posY += y;
+        posX -= x * 2;
+        posY += y * 3;
     }
 
 }
