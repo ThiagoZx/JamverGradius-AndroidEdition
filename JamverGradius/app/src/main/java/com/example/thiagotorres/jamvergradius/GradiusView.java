@@ -1,6 +1,7 @@
 package com.example.thiagotorres.jamvergradius;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,11 +10,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.os.Handler;
-
-import java.io.Console;
 
 /**
  * Created by Thiago.Torres on 05/04/2016.
@@ -34,6 +33,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     private Paint color = new Paint();
     private Rect player = new Rect();
     private int x, y = 0;
+    Player ship;
 
     public GradiusView (Context context){
         super(context);
@@ -44,17 +44,23 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
+        Start();
+
         color.setColor(Color.BLUE);
         color.setStyle(Paint.Style.FILL);
         color.setTextSize(100);
 
     }
 
+    void Start(){
+        ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spaceship));
+    }
+
     @Override
     protected void onDraw(Canvas canvas){
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
         canvas.drawText("Pos_y:" + posY, 20, 400, color);
-        canvas.drawRect(player, color);
+        ship.drawPlayer(canvas);
         super.onDraw(canvas);
     }
 
@@ -79,9 +85,17 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     private void Update() {
-        player.set((x) * -1, y, ((x) * -1) + 300, y + 300);
-        x += Math.round(posX);
-        y += Math.round(posY);
+        //Healthy tests C: (THEY WORK ON OTHER CLASSES)
+        ship.updatePlayer(x, y);
+        x += (Math.round(posX));
+        y += (Math.round(posY));
+
+        //THINGS I HAVE TO DO HERE
+
+        //Update player position
+        //Update shoot position
+        //Detect if there is new shooting
+        //Detect colisions with enemies
     }
 
     @Override
