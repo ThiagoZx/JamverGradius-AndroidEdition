@@ -52,7 +52,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     void Start(){
-        ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spaceship));
+        ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet));
     }
 
     @Override
