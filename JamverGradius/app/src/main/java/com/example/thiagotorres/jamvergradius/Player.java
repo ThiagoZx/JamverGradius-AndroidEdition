@@ -9,10 +9,11 @@ import android.graphics.Paint;
  */
 public class Player {
 
-    //The ship is 74x108 px long, from where it starts.
+    //74X100 = collision dimention;
+    //74x123 = drawable dimention, for canvas limit;
     private Paint paint = new Paint();
     private int posX, posY = 0;
-    private int currentFrame;
+    private int currentFrame = 0;
     private Bitmap image;
 
     public Player(Bitmap bitmap) {
@@ -20,8 +21,13 @@ public class Player {
     }
 
     void drawPlayer(Canvas canvas){
-        canvas.drawBitmap(image, posX, posY, paint);
-        //resizedbitmap1=Bitmap.createBitmap(bmp, 0,0,yourwidth, yourheight);
+        Bitmap sprite = Bitmap.createBitmap(image, (image.getWidth() / 10) * currentFrame, 0, (image.getWidth() / 10), image.getHeight());
+        canvas.drawBitmap(sprite, posX, posY, paint);
+        //currentFrame += 1;
+        //currentFrame = currentFrame > 9 ? currentFrame : 0;
+        currentFrame = currentFrame + 1;
+        if (currentFrame > 9) currentFrame = 0;
+
     }
 
     void updatePlayer(int x, int y){
