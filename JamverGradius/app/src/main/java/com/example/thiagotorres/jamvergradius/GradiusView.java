@@ -3,9 +3,6 @@ package com.example.thiagotorres.jamvergradius;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,15 +19,11 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     //sensor stuff
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
-    private long lastTime = 0;
-    private float posX, posY;//, posZ;
 
     //Managing stuff
     private Handler handler;
-    private boolean isUpdating = true;
 
     //My healthy tests :D
-    private Paint color = new Paint();
     private int x, y = 0;
     Background background;
     Player ship;
@@ -45,11 +38,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         Start();
-
-        color.setColor(Color.BLUE);
-        color.setStyle(Paint.Style.FILL);
-        color.setTextSize(100);
-
     }
 
     void Start(){
@@ -60,8 +48,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     @Override
     protected void onDraw(Canvas canvas){
-        canvas.drawText("Pos_x:" + posX, 20, 200, color);
-        canvas.drawText("Pos_y:" + posY, 20, 400, color);
         background.drawBackground(canvas);
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
@@ -71,68 +57,36 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     public boolean onTouchEvent(MotionEvent event) {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN){
-            System.out.println("You're Holding still at X:" + event.getRawX() + " Y:" + event.getRawY());
+            //System.out.println("You're Holding still at X:" + event.getRawX() + " Y:" + event.getRawY());
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP){
-            System.out.println("Y u let me go ; ^ ;");
+            //System.out.println("Y u let me go ; ^ ;");
         }
 
         if (event.getAction() == MotionEvent.ACTION_MOVE){
-            System.out.println("STOP DRAGIN ME AROUND! >:C");
+            //System.out.println("STOP DRAGIN ME AROUND! >:C");
         }
 
-        if (color.getColor() == (Color.RED)){
-            color.setColor(Color.BLUE);
-        } else{
-            color.setColor(Color.RED);
-        }
-
-        //System.out.println("You're Touching me at X:" + event.getRawX() + " Y:" + event.getRawY());
         return true;
     }
 
     private void Update() {
-        //Healthy tests C: (THEY WORK ON OTHER CLASSES)
-        x = Math.round(posX);
-        y = Math.round(posY);
         background.updateBackground();
         ship.updatePlayer(x, y);
-
-        //THINGS I HAVE TO DO HERE
-
-        //Update player position - Ok!
-        //Update shoot position
-        //Detect if there is new shooting
-        //Detect colisions with enemies
     }
 
     @Override
     public void run() {
-        if(isUpdating)
-        {
-            handler.postDelayed(this, 30);
-
-            Update();
-            invalidate();
-        }
+        handler.postDelayed(this, 30);
+        Update();
+        invalidate();
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        posX = event.values[0];
-        posY = event.values[1];
-        //posZ = event.values[2];
-
-        long currTime = System.currentTimeMillis();
-
-        if((currTime - lastTime) > 100){
-            long diffTime = (currTime - lastTime);
-            lastTime = diffTime;
-
-            //Make sure you gather the shake gesture to perform the special!
-
-        }
+        x = Math.round(event.values[0]);
+        y = Math.round(event.values[1]);
     }
 
     @Override

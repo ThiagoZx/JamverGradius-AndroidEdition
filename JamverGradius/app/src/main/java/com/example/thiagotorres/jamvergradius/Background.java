@@ -12,7 +12,7 @@ public class Background {
     Bitmap background;
     Bitmap stars;
     Paint paint = new Paint();
-    int posY = 0;
+    int currentFrame = 0;
 
     public Background (Bitmap back, Bitmap front) {
         background = back;
@@ -20,14 +20,14 @@ public class Background {
     }
 
     void updateBackground(){
-        posY += 1;
-        if (posY > 960) posY = 0;
+        currentFrame -= 1;
+        if (currentFrame < -960) currentFrame = 0;
     }
 
     void drawBackground(Canvas canvas){
         Bitmap screen = Bitmap.createBitmap(background, 0, 0, canvas.getWidth(), canvas.getHeight());
-        Bitmap paralax = Bitmap.createBitmap(stars, 0, 0, canvas.getWidth(), canvas.getHeight());
+        Bitmap paralax = Bitmap.createBitmap(stars, 0, currentFrame, canvas.getWidth(), canvas.getHeight());
         canvas.drawBitmap(screen, 0, 0, paint);
-        canvas.drawBitmap(paralax, 0, 960 + posY, paint);
+        canvas.drawBitmap(paralax, 0, 0, paint);
     }
 }
