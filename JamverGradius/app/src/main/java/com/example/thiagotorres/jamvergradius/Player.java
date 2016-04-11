@@ -23,11 +23,8 @@ public class Player {
     void drawPlayer(Canvas canvas){
         Bitmap sprite = Bitmap.createBitmap(image, (image.getWidth() / 10) * currentFrame, 0, (image.getWidth() / 10), image.getHeight());
         canvas.drawBitmap(sprite, posX, posY, paint);
-        //currentFrame += 1;
-        //currentFrame = currentFrame > 9 ? currentFrame : 0;
         currentFrame = currentFrame + 1;
         if (currentFrame > 9) currentFrame = 0;
-
     }
 
     void updatePlayer(int x, int y){

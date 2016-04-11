@@ -32,6 +32,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     //My healthy tests :D
     private Paint color = new Paint();
     private int x, y = 0;
+    Background background;
     Player ship;
 
     public GradiusView (Context context){
@@ -52,6 +53,8 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     void Start(){
+        background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background),
+                                    BitmapFactory.decodeResource(getResources(), R.drawable.stars));
         ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet));
     }
 
@@ -59,6 +62,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     protected void onDraw(Canvas canvas){
         canvas.drawText("Pos_x:" + posX, 20, 200, color);
         canvas.drawText("Pos_y:" + posY, 20, 400, color);
+        background.drawBackground(canvas);
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
     }
@@ -92,6 +96,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         //Healthy tests C: (THEY WORK ON OTHER CLASSES)
         x = Math.round(posX);
         y = Math.round(posY);
+        background.updateBackground();
         ship.updatePlayer(x, y);
 
         //THINGS I HAVE TO DO HERE
