@@ -20,13 +20,15 @@ public class Background {
     }
 
     void updateBackground(){
-        currentFrame -= 1;
-        if (currentFrame < -960) currentFrame = 0;
+        currentFrame = currentFrame - 1;
+        if (currentFrame < -960) {
+            currentFrame = 0;
+        }
     }
 
     void drawBackground(Canvas canvas){
-        Bitmap screen = Bitmap.createBitmap(background, 0, 0, canvas.getWidth(), canvas.getHeight());
-        Bitmap paralax = Bitmap.createBitmap(stars, 0, currentFrame, canvas.getWidth(), canvas.getHeight());
+        Bitmap screen = Bitmap.createScaledBitmap(background, canvas.getWidth(), canvas.getHeight(), true);
+        Bitmap paralax = Bitmap.createBitmap(stars, 0, 960 - currentFrame, canvas.getWidth(), canvas.getHeight());
         canvas.drawBitmap(screen, 0, 0, paint);
         canvas.drawBitmap(paralax, 0, 0, paint);
     }

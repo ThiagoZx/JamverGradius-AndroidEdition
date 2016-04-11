@@ -20,6 +20,14 @@ public class Player {
         image = bitmap;
     }
 
+    int cannonPositionX(){
+        return posX + image.getWidth() / 5;
+    }
+
+    int cannonPositionY(){
+        return posY;
+    }
+
     void drawPlayer(Canvas canvas){
         Bitmap sprite = Bitmap.createBitmap(image, (image.getWidth() / 10) * currentFrame, 0, (image.getWidth() / 10), image.getHeight());
         canvas.drawBitmap(sprite, posX, posY, paint);

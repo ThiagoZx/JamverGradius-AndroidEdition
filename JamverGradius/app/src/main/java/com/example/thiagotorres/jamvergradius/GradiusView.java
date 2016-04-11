@@ -23,10 +23,12 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     //Managing stuff
     private Handler handler;
 
-    //My healthy tests :D
+    //Game Settings
     private int x, y = 0;
+    private long lastTime;
     Background background;
     Player ship;
+    Shoot[] machineGun = new Shoot[0]; // <----- Make this a list
 
     public GradiusView (Context context){
         super(context);
@@ -49,6 +51,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     @Override
     protected void onDraw(Canvas canvas){
         background.drawBackground(canvas);
+        for (int i = 0; i < machineGun.length; i++){
+            machineGun[i].drawShoot(canvas);
+        }
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
     }
@@ -57,7 +62,17 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     public boolean onTouchEvent(MotionEvent event) {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN){
-            //System.out.println("You're Holding still at X:" + event.getRawX() + " Y:" + event.getRawY());
+
+            long currTime = System.currentTimeMillis();
+
+            if((currTime - lastTime) > 200){
+                long diffTime = (currTime - lastTime);
+                lastTime = diffTime;
+
+                machineGun[machineGun.length] = new Shoot(BitmapFactory.decodeResource(getResources(), R.drawable.laser),
+                                                            ship.cannonPositionX(), ship.cannonPositionY());
+
+            }
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP){
@@ -74,6 +89,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     private void Update() {
         background.updateBackground();
         ship.updatePlayer(x, y);
+        for (int i = 0; i < machineGun.length; i++){
+            machineGun[i].updateShoot();
+        }
     }
 
     @Override
