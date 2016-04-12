@@ -28,13 +28,18 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     //Game Settings
     private int x, y = 0;
-    private long lastTime;
+    private long lastTime, gravitationalField;
+    Context game;
     Background background;
     Player ship;
     List<Shoot> machineGun;
+    List<Asteroid> meteorShower;
 
     public GradiusView (Context context){
         super(context);
+
+        game = context;
+
         handler = new Handler();
         handler.post(this);
 
@@ -48,7 +53,8 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     void Start(){
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background),
                                     BitmapFactory.decodeResource(getResources(), R.drawable.stars));
-        machineGun = new ArrayList<Shoot>();
+        machineGun = new ArrayList<>();
+        meteorShower = new ArrayList<>();
         ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet));
     }
 
@@ -64,12 +70,25 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         }
     }
 
+    private void meteor(){
+        long currTime = System.currentTimeMillis();
+
+        if((currTime - gravitationalField) > 1500){
+            gravitationalField = currTime;
+            meteorShower.add(meteorShower.size(), new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.asteroid), game));
+        }
+    }
+
     private void Update() {
+        meteor();
         background.updateBackground();
-        ship.updatePlayer(x, y);
         for (int i = 0; i < machineGun.size(); i++){
             machineGun.get(i).updateShoot();
         }
+        for (int i = 0; i < meteorShower.size(); i++){
+            meteorShower.get(i).updateAsteroid();
+        }
+        ship.updatePlayer(x, y);
     }
 
     @Override
@@ -78,6 +97,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         for (int i = 0; i < machineGun.size(); i++){
             machineGun.get(i).drawShoot(canvas);
         }
+        for (int i = 0; i < meteorShower.size(); i++){
+            meteorShower.get(i).drawAsteroid(canvas);
+        }
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
     }
@@ -85,7 +107,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP ){
+        if (event.getAction() == MotionEvent.ACTION_DOWN ||
+            event.getAction() == MotionEvent.ACTION_MOVE ||
+            event.getAction() == MotionEvent.ACTION_UP ){
             shoot();
         }
 
