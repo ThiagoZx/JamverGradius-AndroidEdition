@@ -20,10 +20,10 @@ public class Shoot {
     }
 
     void drawShoot(Canvas canvas){
-        canvas.drawBitmap(image, posX, posY, paint);
+        canvas.drawBitmap(image, posX - image.getWidth() / 2, posY, paint);
     }
 
     void updateShoot(){
-        //posY = posY + 7;
+        posY = posY - 45;
     }
 }

@@ -11,6 +11,9 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Thiago.Torres on 05/04/2016.
  */
@@ -28,7 +31,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     private long lastTime;
     Background background;
     Player ship;
-    Shoot[] machineGun = new Shoot[0]; // <----- Make this a list
+    List<Shoot> machineGun;
 
     public GradiusView (Context context){
         super(context);
@@ -45,14 +48,35 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     void Start(){
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background),
                                     BitmapFactory.decodeResource(getResources(), R.drawable.stars));
+        machineGun = new ArrayList<Shoot>();
         ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet));
+    }
+
+    private void shoot(){
+        long currTime = System.currentTimeMillis();
+
+        if((currTime - lastTime) > 350){
+            lastTime = currTime;
+
+            machineGun.add(machineGun.size(), new Shoot(BitmapFactory.decodeResource(getResources(), R.drawable.laser),
+                    ship.cannonPositionX(), ship.cannonPositionY()));
+
+        }
+    }
+
+    private void Update() {
+        background.updateBackground();
+        ship.updatePlayer(x, y);
+        for (int i = 0; i < machineGun.size(); i++){
+            machineGun.get(i).updateShoot();
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas){
         background.drawBackground(canvas);
-        for (int i = 0; i < machineGun.length; i++){
-            machineGun[i].drawShoot(canvas);
+        for (int i = 0; i < machineGun.size(); i++){
+            machineGun.get(i).drawShoot(canvas);
         }
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
@@ -61,37 +85,11 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
-
-            long currTime = System.currentTimeMillis();
-
-            if((currTime - lastTime) > 200){
-                long diffTime = (currTime - lastTime);
-                lastTime = diffTime;
-
-                machineGun[machineGun.length] = new Shoot(BitmapFactory.decodeResource(getResources(), R.drawable.laser),
-                                                            ship.cannonPositionX(), ship.cannonPositionY());
-
-            }
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_UP){
-            //System.out.println("Y u let me go ; ^ ;");
-        }
-
-        if (event.getAction() == MotionEvent.ACTION_MOVE){
-            //System.out.println("STOP DRAGIN ME AROUND! >:C");
+        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP ){
+            shoot();
         }
 
         return true;
-    }
-
-    private void Update() {
-        background.updateBackground();
-        ship.updatePlayer(x, y);
-        for (int i = 0; i < machineGun.length; i++){
-            machineGun[i].updateShoot();
-        }
     }
 
     @Override

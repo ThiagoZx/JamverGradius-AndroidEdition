@@ -21,7 +21,7 @@ public class Player {
     }
 
     int cannonPositionX(){
-        return posX + image.getWidth() / 5;
+        return posX + image.getWidth() / 20;
     }
 
     int cannonPositionY(){
