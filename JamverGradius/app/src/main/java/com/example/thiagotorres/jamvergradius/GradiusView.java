@@ -29,7 +29,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     //Game Settings
     private int x, y = 0;
     private long lastTime, gravitationalField;
-    Context game;
     Background background;
     Player ship;
     List<Shoot> machineGun;
@@ -37,8 +36,6 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     public GradiusView (Context context){
         super(context);
-
-        game = context;
 
         handler = new Handler();
         handler.post(this);
@@ -75,7 +72,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
         if((currTime - gravitationalField) > 1500){
             gravitationalField = currTime;
-            meteorShower.add(meteorShower.size(), new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.asteroid), game));
+            meteorShower.add(meteorShower.size(), new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.asteroid)));
         }
     }
 
