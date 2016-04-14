@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import java.util.List;
+
 /**
  * Created by Thiago.Torres on 08/04/2016.
  */
@@ -30,6 +32,18 @@ public class Player {
 
     int cannonPositionY(){
         return posY;
+    }
+
+    boolean gameOver(List<Asteroid> asteroids){
+
+        for (int i = 0; i < asteroids.size(); i++){                   //
+            if ( asteroids.get(i).getPosX() < posX ){                 //  <---    This is basically done. You just need to do that... Stupid, giant condition ; ~ ;
+                return true;                                          //                            P.s. Apply this to the shooting too. Don't fotget about changing for about two or three frames
+                                                                      //                            the lase explosion and the ship explosion too ok? Thx.
+            }
+        }
+
+        return false;
     }
 
     void drawPlayer(Canvas canvas){

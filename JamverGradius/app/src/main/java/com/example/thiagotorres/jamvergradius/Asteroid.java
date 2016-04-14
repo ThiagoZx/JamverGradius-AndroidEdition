@@ -20,6 +20,14 @@ public class Asteroid {
         posY = 0 - image.getHeight();
     }
 
+    int getPosX(){
+        return posX;
+    }
+
+    int getPosY(){
+        return posY;
+    }
+
     void setPositions(Canvas canvas){
         screen = canvas.getWidth();
         posX = (int)(Math.random() * screen) - image.getWidth();
@@ -35,5 +43,6 @@ public class Asteroid {
 
     void updateAsteroid(){
         posY = posY + 20;
+
     }
 }

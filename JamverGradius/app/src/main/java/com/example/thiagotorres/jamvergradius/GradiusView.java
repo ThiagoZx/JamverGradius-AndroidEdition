@@ -77,15 +77,17 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     private void Update() {
-        meteor();
         background.updateBackground();
-        for (int i = 0; i < machineGun.size(); i++){
-            machineGun.get(i).updateShoot();
+        if (!(ship.gameOver(meteorShower))) {
+            meteor();
+            for (int i = 0; i < machineGun.size(); i++) {
+                machineGun.get(i).updateShoot();
+            }
+            for (int i = 0; i < meteorShower.size(); i++) {
+                meteorShower.get(i).updateAsteroid();
+            }
+            ship.updatePlayer(x, y);
         }
-        for (int i = 0; i < meteorShower.size(); i++){
-            meteorShower.get(i).updateAsteroid();
-        }
-        ship.updatePlayer(x, y);
     }
 
     @Override
