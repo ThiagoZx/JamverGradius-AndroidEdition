@@ -12,12 +12,16 @@ public class Player {
     //74X100 = collision dimention;
     //74x123 = drawable dimention, for canvas limit;
     private Paint paint = new Paint();
-    private int posX, posY = 0;
+    private int posX = 300;
+    private int posY = 0;
     private int currentFrame = 0;
     private Bitmap image;
+    private int shipSize;
+    private int canvasWidth, canvasHeight;
 
     public Player(Bitmap bitmap) {
         image = bitmap;
+        shipSize = image.getWidth() / 10;
     }
 
     int cannonPositionX(){
@@ -29,13 +33,34 @@ public class Player {
     }
 
     void drawPlayer(Canvas canvas){
-        Bitmap sprite = Bitmap.createBitmap(image, (image.getWidth() / 10) * currentFrame, 0, (image.getWidth() / 10), image.getHeight());
+        canvasWidth = canvas.getWidth();
+        canvasHeight = canvas.getHeight();
+        Bitmap sprite = Bitmap.createBitmap(image, shipSize * currentFrame, 0, shipSize, image.getHeight());
         canvas.drawBitmap(sprite, posX, posY, paint);
     }
 
+    private void canvasBoundary(){
+        if (posX <= 0) {
+            posX = 0;
+        } else if(posX >= canvasWidth - shipSize){
+            posX = canvasWidth - shipSize;
+        }
+
+        if (posY + 123 >= canvasHeight){
+            posY = canvasHeight - 123;
+        } else if (posY <= 0){
+            posY = 0;
+        }
+
+    }
+
     void updatePlayer(int x, int y){
-        posX -= x * 2;
+
         posY += y * 3;
+        posX -= x * 2;
+
+        canvasBoundary();
+
 
         currentFrame = currentFrame + 1;
         if (currentFrame > 9) currentFrame = 0;
