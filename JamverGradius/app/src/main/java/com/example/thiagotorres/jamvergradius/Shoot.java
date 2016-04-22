@@ -19,6 +19,13 @@ public class Shoot {
         posY = positionY;
     }
 
+    boolean shootOffScreen(){
+        if(posY + image.getHeight() < 0){
+            return true;
+        }
+        return false;
+    }
+
     void drawShoot(Canvas canvas){
         canvas.drawBitmap(image, posX - image.getWidth() / 2, posY, paint);
     }

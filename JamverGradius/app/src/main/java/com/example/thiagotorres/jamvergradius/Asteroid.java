@@ -28,6 +28,13 @@ public class Asteroid {
         return posY;
     }
 
+    boolean asteroidOffScreen(Canvas canvas){
+        if(posY + image.getHeight() > canvas.getHeight()){
+            return true;
+        }
+        return false;
+    }
+
     void setPositions(Canvas canvas){
         screen = canvas.getWidth();
         posX = (int)(Math.random() * screen) - image.getWidth();

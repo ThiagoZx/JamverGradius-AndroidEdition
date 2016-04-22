@@ -81,7 +81,11 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         if (!(ship.gameOver(meteorShower))) {
             meteor();
             for (int i = 0; i < machineGun.size(); i++) {
-                machineGun.get(i).updateShoot();
+                if (machineGun.get(i).shootOffScreen()){
+                    machineGun.remove(i);
+                } else {
+                    machineGun.get(i).updateShoot();
+                }
             }
             for (int i = 0; i < meteorShower.size(); i++) {
                 meteorShower.get(i).updateAsteroid();
@@ -97,7 +101,11 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
             machineGun.get(i).drawShoot(canvas);
         }
         for (int i = 0; i < meteorShower.size(); i++){
-            meteorShower.get(i).drawAsteroid(canvas);
+            if (meteorShower.get(i).asteroidOffScreen(canvas)){
+                meteorShower.remove(i);
+            }else {
+                meteorShower.get(i).drawAsteroid(canvas);
+            }
         }
         ship.drawPlayer(canvas);
         super.onDraw(canvas);
