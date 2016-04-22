@@ -9,8 +9,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +32,14 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     //Game Settings
     private int x, y = 0;
-    private long lastTime, gravitationalField;
+    private long lastTime;
+    private long gravitationalField = System.currentTimeMillis();
     Background background;
     Player ship;
     List<Shoot> machineGun;
     List<Asteroid> meteorShower;
+    int screenW;
+    int screenH;
 
     public GradiusView (Context context){
         super(context);
@@ -45,15 +51,19 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
+        screenW = context.getResources().getDisplayMetrics().widthPixels;
+        screenH = context.getResources().getDisplayMetrics().heightPixels;
+
         Start();
     }
 
     void Start(){
+
         background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background),
                                     BitmapFactory.decodeResource(getResources(), R.drawable.stars));
         machineGun = new ArrayList<>();
         meteorShower = new ArrayList<>();
-        ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet));
+        ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet), screenW / 2, screenH / 2);
     }
 
     private void shoot(){
@@ -155,7 +165,5 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 }

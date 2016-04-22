@@ -35,6 +35,6 @@ public class Shoot {
     void updateShoot(){
         posY = posY - 45;
         body = new Rect();
-        body.set(posX, posY, posX + image.getWidth(), posY + image.getHeight());
+        body.set(posX - 10, posY, posX + image.getWidth() + 10, posY + image.getHeight());
     }
 }

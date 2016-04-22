@@ -14,18 +14,20 @@ import java.util.List;
 public class Player {
 
     private Paint paint = new Paint();
-    private int posX = 100;
-    private int posY = 100;
+    private int posX = 240;
+    private int posY = 534;
     private int currentFrame = 0;
     private Bitmap image;
     private int shipSize;
     private int canvasWidth, canvasHeight;
     public Rect body = new Rect();
-    private boolean start = true;
 
-    public Player(Bitmap bitmap) {
+    public Player(Bitmap bitmap, int positionX, int positionY) {
         image = bitmap;
         shipSize = image.getWidth() / 10;
+        posX = positionX;
+        posY = positionY;
+        System.out.println(posX +  "and " + posY);
     }
 
     int cannonPositionX(){
@@ -41,7 +43,7 @@ public class Player {
         canvasHeight = canvas.getHeight();
         Bitmap sprite = Bitmap.createBitmap(image, shipSize * currentFrame, 0, shipSize, image.getHeight());
         body = new Rect();
-        body.set(posX, posY, posX + image.getWidth() / 10, posY + image.getHeight());
+        body.set(posX + 15, posY - 15, posX + (image.getWidth() / 10) - 15, posY + image.getHeight() - 15);
         canvas.drawBitmap(sprite, posX, posY, paint);
     }
 
@@ -61,13 +63,6 @@ public class Player {
     }
 
     void updatePlayer(int x, int y){
-
-        if(start){
-            posX = canvasWidth / 2 - shipSize / 2;
-            posY = canvasHeight / 3;
-            start = false;
-        }
-
 
         posY += y * 3;
         posX -= x * 2;
