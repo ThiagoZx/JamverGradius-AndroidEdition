@@ -3,6 +3,7 @@ package com.example.thiagotorres.jamvergradius;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -78,7 +79,24 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
 
     private void Update() {
         background.updateBackground();
-        if (!(ship.gameOver(meteorShower))) {
+        boolean gameOver = false;
+
+        for (int i = 0; i < meteorShower.size(); i++){
+            if (Rect.intersects(meteorShower.get(i).body, ship.body))
+                gameOver = true;
+        }
+
+        for (int i = 0; i < meteorShower.size(); i++){
+            for (int j = 0; j < machineGun.size(); j++){
+                if (Rect.intersects(meteorShower.get(i).body, machineGun.get(j).body)) {
+                    meteorShower.remove(i);
+                    machineGun.remove(j);
+                    break;
+                }
+            }
+        }
+
+        if (!gameOver) {
             meteor();
             for (int i = 0; i < machineGun.size(); i++) {
                 if (machineGun.get(i).shootOffScreen()){
