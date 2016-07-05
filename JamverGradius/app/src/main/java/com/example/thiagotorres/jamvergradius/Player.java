@@ -20,6 +20,7 @@ public class Player {
     private Bitmap image;
     private int shipSize;
     private int canvasWidth, canvasHeight;
+    private int counter = 0;
     public Rect body = new Rect();
 
     public Player(Bitmap bitmap, int positionX, int positionY) {
@@ -27,7 +28,14 @@ public class Player {
         shipSize = image.getWidth() / 10;
         posX = positionX;
         posY = positionY;
-        System.out.println(posX +  "and " + posY);
+    }
+
+    void increaseCounter(){
+        counter++;
+    }
+
+    int getCounter(){
+        return counter;
     }
 
     int cannonPositionX(){

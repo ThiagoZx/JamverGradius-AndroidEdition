@@ -1,6 +1,7 @@
 package com.example.thiagotorres.jamvergradius;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -38,6 +39,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     Player ship;
     List<Shoot> machineGun;
     List<Asteroid> meteorShower;
+    List<Char> alphabet;
     int screenW;
     int screenH;
 
@@ -96,9 +98,12 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
                 gameOver = true;
         }
 
+
         for (int i = 0; i < meteorShower.size(); i++){
             for (int j = 0; j < machineGun.size(); j++){
                 if (Rect.intersects(meteorShower.get(i).body, machineGun.get(j).body)) {
+                    //Work from here
+                    ship.increaseCounter();
                     meteorShower.remove(i);
                     machineGun.remove(j);
                     break;
@@ -128,6 +133,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         for (int i = 0; i < machineGun.size(); i++){
             machineGun.get(i).drawShoot(canvas);
         }
+
         for (int i = 0; i < meteorShower.size(); i++){
             if (meteorShower.get(i).asteroidOffScreen(canvas)){
                 meteorShower.remove(i);

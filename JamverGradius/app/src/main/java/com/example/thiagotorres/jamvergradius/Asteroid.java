@@ -22,6 +22,13 @@ public class Asteroid {
         posY = 0 - image.getHeight();
     }
 
+    int getPositions(String Axis){
+        if (Axis == "x"){ return posX; }
+        if (Axis == "y"){ return posY; }
+
+        return 0;
+    }
+
     boolean asteroidOffScreen(Canvas canvas){
         if(posY > canvas.getHeight()){
             return true;
@@ -45,7 +52,6 @@ public class Asteroid {
 
     void updateAsteroid(){
         posY = posY + 20;
-
         body = new Rect();
         body.set(posX, posY, posX + image.getWidth(), posY + image.getHeight());
 
