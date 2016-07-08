@@ -8,7 +8,7 @@ import android.graphics.Rect;
 /**
  * Created by Thiago.Torres on 05/07/2016.
  */
-public class Char {
+public class Letter {
 
     private Paint paint = new Paint();
     private int posX;
@@ -16,24 +16,24 @@ public class Char {
     private Bitmap image;
     public Rect body;
 
-    public Char (Bitmap bitmap, int x, int y) {
+    public Letter(Bitmap bitmap, int x, int y) {
         image = bitmap;
         posY = y;
         posX = x;
     }
 
-    boolean CharOffScreen (Canvas canvas){
+    boolean LetterOffScreen (Canvas canvas){
         if(posY > canvas.getHeight()){
             return true;
         }
         return false;
     }
 
-    void drawChar(Canvas canvas){
+    void drawLetter(Canvas canvas){
         canvas.drawBitmap(image, posX, posY, paint);
     }
 
-    void updateChar(){
+    void updateLetter(){
         posY = posY + 20;
         body = new Rect();
         body.set(posX, posY, posX + image.getWidth(), posY + image.getHeight());

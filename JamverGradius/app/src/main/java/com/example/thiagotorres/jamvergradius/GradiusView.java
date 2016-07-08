@@ -1,7 +1,6 @@
 package com.example.thiagotorres.jamvergradius;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -10,11 +9,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     Player ship;
     List<Shoot> machineGun;
     List<Asteroid> meteorShower;
-    List<Char> alphabet;
+    List<Letter> alphabet;
     int screenW;
     int screenH;
 
@@ -65,6 +61,7 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
                                     BitmapFactory.decodeResource(getResources(), R.drawable.stars));
         machineGun = new ArrayList<>();
         meteorShower = new ArrayList<>();
+        alphabet = new ArrayList<>();
         ship = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.spritesheet), screenW / 2, screenH / 2);
     }
 
@@ -89,6 +86,12 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         }
     }
 
+    private void createLetter(int x, int y) {
+        if (ship.getCounter() > 5){
+            alphabet.add(alphabet.size(), new Letter(BitmapFactory.decodeResource(getResources(), R.drawable.letter), x, y));
+        }
+    }
+
     private void Update() {
         background.updateBackground();
         boolean gameOver = false;
@@ -102,8 +105,9 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
         for (int i = 0; i < meteorShower.size(); i++){
             for (int j = 0; j < machineGun.size(); j++){
                 if (Rect.intersects(meteorShower.get(i).body, machineGun.get(j).body)) {
-                    //Work from here
+                    //Work from here -- All done! Adjust performance and image size. Oh, the Intent, by the way, that is the work itself. Do it.
                     ship.increaseCounter();
+                    createLetter(meteorShower.get(i).getPositions("x"), meteorShower.get(i).getPositions("y"));
                     meteorShower.remove(i);
                     machineGun.remove(j);
                     break;
@@ -120,9 +124,15 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
                     machineGun.get(i).updateShoot();
                 }
             }
+
             for (int i = 0; i < meteorShower.size(); i++) {
                 meteorShower.get(i).updateAsteroid();
             }
+
+            for (int i = 0; i < alphabet.size(); i++) {
+                alphabet.get(i).updateLetter();
+            }
+
             ship.updatePlayer(x, y);
         }
     }
@@ -130,8 +140,17 @@ public class GradiusView extends View implements SensorEventListener, Runnable{
     @Override
     protected void onDraw(Canvas canvas){
         background.drawBackground(canvas);
+
         for (int i = 0; i < machineGun.size(); i++){
             machineGun.get(i).drawShoot(canvas);
+        }
+
+        for (int i = 0; i < alphabet.size(); i++){
+            if(alphabet.get(i).LetterOffScreen(canvas)){
+                alphabet.remove(i);
+            } else {
+                alphabet.get(i).drawLetter(canvas);
+            }
         }
 
         for (int i = 0; i < meteorShower.size(); i++){
