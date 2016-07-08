@@ -23,14 +23,14 @@ public class Letter {
     }
 
     boolean LetterOffScreen (Canvas canvas){
-        if(posY > canvas.getHeight()){
+        if(posY > canvas.getHeight() + image.getHeight()){
             return true;
         }
         return false;
     }
 
     void drawLetter(Canvas canvas){
-        canvas.drawBitmap(image, posX, posY, paint);
+        canvas.drawBitmap(image, posX - image.getWidth() / 2, posY - image.getHeight() / 2, paint);
     }
 
     void updateLetter(){
